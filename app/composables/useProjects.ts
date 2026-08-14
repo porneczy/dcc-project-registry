@@ -1,7 +1,9 @@
+import { storeToRefs } from 'pinia'
 import type { Project } from '~/types/project'
 
 export const useProjects = () => {
   const projectsStore = useProjectsStore()
+  const { projects } = storeToRefs(projectsStore)
 
   const initialize = () => {
     projectsStore.initialize()
@@ -33,7 +35,7 @@ export const useProjects = () => {
   }
 
   return {
-    projects: projectsStore.projects,
+    projects,
     initialize,
     createProject,
     updateProject,
