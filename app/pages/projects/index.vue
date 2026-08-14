@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { projects, initialize } = useProjects()
 
+const isLoading = ref(true)
 const searchQuery = ref('')
 
 const filteredProjects = computed(() => {
@@ -20,6 +21,7 @@ const filteredProjects = computed(() => {
 
 onMounted(() => {
   initialize()
+  isLoading.value = false
 })
 </script>
 
@@ -42,7 +44,16 @@ onMounted(() => {
     </div>
 
     <div
-      v-if="projects.length === 0"
+      v-if="isLoading"
+      class="rounded-lg border p-12 text-center"
+    >
+      <p class="text-sm text-muted-foreground">
+        Projektek betöltése...
+      </p>
+    </div>
+
+    <div
+      v-else-if="projects.length === 0"
       class="rounded-lg border border-dashed p-12 text-center"
     >
       <h2 class="text-lg font-medium">
