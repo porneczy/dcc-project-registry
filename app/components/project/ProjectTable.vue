@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { Project } from '~/types/project'
+import { formatCurrency } from '~/utils/formatCurrency'
+import { formatDate } from '~/utils/formatDate'
 
 defineProps<{
   projects: Project[]
@@ -32,11 +34,11 @@ defineProps<{
           </TableCell>
 
           <TableCell>
-            {{ project.startDate }}
+            {{ formatDate(project.startDate) }}
           </TableCell>
 
           <TableCell>
-            {{ project.budget }}
+            {{ formatCurrency(project.budget) }}
           </TableCell>
         </TableRow>
       </TableBody>
