@@ -1,6 +1,23 @@
 <script setup lang="ts">
 const { projects, initialize } = useProjects()
 
+const searchQuery = ref('')
+
+const filteredProjects = computed(() => {
+  const query = searchQuery.value.trim().toLowerCase()
+
+  if (!query) {
+    return projects.value
+  }
+
+  return projects.value.filter(project => {
+    return (
+      project.name.toLowerCase().includes(query)
+      || project.description.toLowerCase().includes(query)
+    )
+  })
+})
+
 onMounted(() => {
   initialize()
 })
@@ -8,7 +25,7 @@ onMounted(() => {
 
 <template>
   <main class="container mx-auto px-4 py-8">
-    <div class="mb-8 flex items-center justify-between">
+    <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div>
         <h1 class="text-3xl font-semibold tracking-tight">
           Projektek
@@ -41,9 +58,28 @@ onMounted(() => {
       </Button>
     </div>
 
-    <ProjectTable
-      v-else
-      :projects="projects"
-    />
+    <template v-else>
+      <div class="mb-6">
+        <ProjectSearch v-model="searchQuery" />
+      </div>
+
+      <ProjectTable
+        v-if="filteredProjects.length > 0"
+        :projects="filteredProjects"
+      />
+
+      <div
+        v-else
+        class="rounded-lg border border-dashed p-12 text-center"
+      >
+        <h2 class="text-lg font-medium">
+          Nincs találat
+        </h2>
+
+        <p class="mt-2 text-sm text-muted-foreground">
+          Próbálj meg más keresési kifejezést.
+        </p>
+      </div>
+    </template>
   </main>
 </template>
