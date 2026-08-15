@@ -13,7 +13,9 @@ const isActive = (path: string) => {
 
 <template>
   <header class="border-b">
-    <nav class="container mx-auto flex items-center justify-between px-4 py-4">
+    <nav
+      class="container mx-auto flex flex-col items-center gap-4 px-4 py-4 sm:flex-row sm:justify-between"
+    >
       <NuxtLink
         to="/projects"
         class="text-lg font-semibold"
@@ -21,7 +23,7 @@ const isActive = (path: string) => {
         DCC Project Registry
       </NuxtLink>
 
-      <div class="flex items-center gap-2">
+      <div class="flex flex-wrap gap-2">
         <Button
           :variant="isActive('/projects') ? 'default' : 'ghost'"
           as-child
