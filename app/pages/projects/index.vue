@@ -37,12 +37,6 @@ onMounted(() => {
           A projektjeid áttekintése.
         </p>
       </div>
-
-      <Button as-child>
-        <NuxtLink to="/projects/new">
-          Új projekt
-        </NuxtLink>
-      </Button>
     </div>
 
     <div
