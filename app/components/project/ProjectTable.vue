@@ -17,6 +17,9 @@ defineProps<{
           <TableHead>Leírás</TableHead>
           <TableHead>Kezdési dátum</TableHead>
           <TableHead>Költségvetés</TableHead>
+          <TableHead class="text-right">
+            Műveletek
+          </TableHead>
         </TableRow>
       </TableHeader>
 
@@ -39,6 +42,18 @@ defineProps<{
 
           <TableCell>
             {{ formatCurrency(project.budget) }}
+          </TableCell>
+
+          <TableCell class="text-right">
+            <Button
+              variant="outline"
+              size="sm"
+              as-child
+            >
+              <NuxtLink :to="`/projects/${project.id}/edit`">
+                Szerkesztés
+              </NuxtLink>
+            </Button>
           </TableCell>
         </TableRow>
       </TableBody>
