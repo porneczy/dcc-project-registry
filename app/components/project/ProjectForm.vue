@@ -5,6 +5,14 @@ import {
   minValue,
   required,
 } from '@vuelidate/validators'
+import type { DateValue } from '@internationalized/date'
+import {
+  CalendarDate,
+  DateFormatter,
+  getLocalTimeZone,
+  parseDate,
+} from '@internationalized/date'
+import { CalendarIcon } from '@lucide/vue'
 
 interface ProjectFormData {
   name: string
@@ -25,8 +33,24 @@ const emit = defineEmits<{
 
 const name = ref(props.initialValues?.name ?? '')
 const description = ref(props.initialValues?.description ?? '')
-const startDate = ref(props.initialValues?.startDate ?? '')
 const budget = ref<number | undefined>(props.initialValues?.budget)
+const startDate = ref(props.initialValues?.startDate ?? '')
+const date = ref<DateValue>()
+
+const minDate = new CalendarDate(2000, 1, 1)
+const maxDate = new CalendarDate(2100, 12, 31)
+
+const dateFormatter = new DateFormatter('hu-HU', {
+  dateStyle: 'medium',
+})
+
+if (startDate.value) {
+  try {
+    date.value = parseDate(startDate.value)
+  } catch {
+    date.value = undefined
+  }
+}
 
 const rules = computed(() => ({
   name: {
@@ -69,6 +93,15 @@ const handleSubmit = async () => {
     startDate: startDate.value,
     budget: budget.value,
   })
+}
+
+const handleDateChange = (value: DateValue | undefined) => {
+  if (!value) {
+    return
+  }
+
+  date.value = value
+  startDate.value = value.toString()
 }
 </script>
 
@@ -123,12 +156,41 @@ const handleSubmit = async () => {
         Kezdési dátum
       </Label>
 
-      <Input
-        id="startDate"
-        v-model="startDate"
-        type="date"
-        :aria-invalid="v$.startDate.$error"
-      />
+      <Popover>
+        <PopoverTrigger as-child>
+          <Button
+            id="startDate"
+            variant="outline"
+            class="w-full justify-start text-left font-normal"
+            :class="{ 'border-destructive': v$.startDate.$error }"
+            :aria-invalid="v$.startDate.$error"
+          >
+            <CalendarIcon />
+
+            <span>
+              {{
+                date
+                  ? dateFormatter.format(date.toDate(getLocalTimeZone()))
+                  : 'Válassz kezdési dátumot'
+              }}
+            </span>
+          </Button>
+        </PopoverTrigger>
+
+        <PopoverContent
+          class="w-auto p-0"
+          align="start"
+        >
+          <Calendar
+            v-model="date"
+            :min-value="minDate"
+            :max-value="maxDate"
+            layout="month-and-year"
+            initial-focus
+            @update:model-value="handleDateChange"
+          />
+        </PopoverContent>
+      </Popover>
 
       <p
         v-if="v$.startDate.$error"
