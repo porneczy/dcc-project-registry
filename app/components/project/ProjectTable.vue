@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { toast } from 'vue-sonner'
 import type { Project } from '~/types/project'
 import { formatCurrency } from '~/utils/formatCurrency'
 import { formatDate } from '~/utils/formatDate'
@@ -9,6 +8,7 @@ defineProps<{
 }>()
 
 const { deleteProject } = useProjects()
+const { showSuccess, showError } = useProjectFeedback()
 
 const isDeleteDialogOpen = ref(false)
 const projectToDelete = ref<Project>()
@@ -27,11 +27,11 @@ const handleDelete = () => {
   const deleted = deleteProject(projectToDelete.value.id)
 
   if (!deleted) {
-    toast.error('A projekt törlése sikertelen.')
+    showError('A projekt törlése sikertelen.')
     return
   }
 
-  toast.success(`A „${projectName}” projekt törölve.`)
+  showSuccess(`A „${projectName}” projekt törölve.`)
 
   projectToDelete.value = undefined
   isDeleteDialogOpen.value = false
