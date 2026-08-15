@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { toast } from 'vue-sonner'
-
 const router = useRouter()
 const { createProject } = useProjects()
+const { showSuccess } = useProjectFeedback()
 
 const handleSubmit = (projectData: {
   name: string
@@ -12,7 +11,7 @@ const handleSubmit = (projectData: {
 }) => {
   const project = createProject(projectData)
 
-  toast.success(`A „${project.name}” projekt létrehozva.`)
+  showSuccess(`A „${project.name}” projekt létrehozva.`)
 
   router.push('/projects')
 }
