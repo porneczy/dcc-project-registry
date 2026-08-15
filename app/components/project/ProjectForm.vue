@@ -6,20 +6,27 @@ import {
   required,
 } from '@vuelidate/validators'
 
+interface ProjectFormData {
+  name: string
+  description: string
+  startDate: string
+  budget: number
+}
+
+const props = defineProps<{
+  initialValues?: ProjectFormData
+  submitLabel?: string
+}>()
+
 const emit = defineEmits<{
-  submit: [project: {
-    name: string
-    description: string
-    startDate: string
-    budget: number
-  }]
+  submit: [project: ProjectFormData]
   cancel: []
 }>()
 
-const name = ref('')
-const description = ref('')
-const startDate = ref('')
-const budget = ref<number | undefined>()
+const name = ref(props.initialValues?.name ?? '')
+const description = ref(props.initialValues?.description ?? '')
+const startDate = ref(props.initialValues?.startDate ?? '')
+const budget = ref<number | undefined>(props.initialValues?.budget)
 
 const rules = computed(() => ({
   name: {
@@ -163,7 +170,7 @@ const handleSubmit = async () => {
       </Button>
 
       <Button type="submit">
-        Projekt létrehozása
+        {{ submitLabel ?? 'Projekt létrehozása' }}
       </Button>
     </div>
   </form>
