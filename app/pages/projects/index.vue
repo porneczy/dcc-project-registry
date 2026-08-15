@@ -38,8 +38,10 @@ onMounted(() => {
         </p>
       </div>
 
-      <Button>
-        Új projekt
+      <Button as-child>
+        <NuxtLink to="/projects/new">
+          Új projekt
+        </NuxtLink>
       </Button>
     </div>
 
@@ -64,8 +66,13 @@ onMounted(() => {
         Hozd létre az első projektedet.
       </p>
 
-      <Button class="mt-6">
-        Projekt létrehozása
+      <Button
+        class="mt-6"
+        as-child
+      >
+        <NuxtLink to="/projects/new">
+          Projekt létrehozása
+        </NuxtLink>
       </Button>
     </div>
 
