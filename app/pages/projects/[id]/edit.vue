@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { toast } from 'vue-sonner'
 import type { Project } from '~/types/project'
 
 const route = useRoute()
@@ -34,10 +35,17 @@ const handleSubmit = (projectData: Omit<Project, 'id'>) => {
     return
   }
 
-  updateProject({
+  const updated = updateProject({
     id: project.value.id,
     ...projectData,
   })
+
+  if (!updated) {
+    toast.error('A projekt módosítása sikertelen.')
+    return
+  }
+
+  toast.success(`A „${projectData.name}” projekt módosítva.`)
 
   router.push('/projects')
 }
