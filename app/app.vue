@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import 'vue-sonner/style.css'
 import { Toaster } from '~/components/ui/sonner'
+import Navbar from '~/components/layout/Navbar.vue'
 </script>
 
 <template>
+  <Navbar />
+
   <NuxtPage />
 
   <Toaster
